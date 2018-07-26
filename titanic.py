@@ -1,0 +1,47 @@
+import tflearn
+import numpy as np
+
+from tflearn.datasets import titanic
+titanic.download_dataset('titanic_dataset.csv')
+
+from tflearn.data_utils import load_csv
+data, labels = load_csv('titanic_dataset.csv',target_column=0,  categorical_labels=True, n_classes=2, columns_to_ignore=[2,7])
+
+load_csv()
+
+print("the first row of data",data[0])
+print("Age of the first person: ",data[0][2])
+
+# Try find the the average ticket price
+# build statement that tells a story about one of the passengers.
+
+for i in data:
+    if i[1] == 'female':
+        i[1] = 1
+    else:
+        i[1] = 0
+
+net = tflearn.input_data(shape=[None, 6]) #An input layer, with variable input size of examples with 6 features (the [None, 6])
+net = tflearn.fully_connected(net, 32) #Two hidden layers with 32 nodes
+net = tflearn.fully_connected(net, 32) #net tells the computer to add it to the line above
+net = tflearn.fully_connected(net, 2, activation='softmax') #An output later of 2 nodes, and a "softmax" activation (more on activations later)
+net = tflearn.regression(net) #find the pattern
+
+
+# Define model
+model = tflearn.DNN(net)
+# Start training (apply gradient descent algorithm)
+model.fit(data, labels, n_epoch=500, batch_size=16, show_metric=True)
+
+dicaprio = [3, 'Jack Dawson', 'male', 19, 0, 0, 'N/A', 5.0000]
+
+print("Jack ",model.predict([[3, 0, 19, 0, 0, 5.0]])[0][0]) # 0 0 is chance of death
+print("Jack if rich",model.predict([[1, 0, 19, 0, 0, 250]])[0][0]) #0 1 is chance of surviving
+print("Jack if Married",model.predict([[3, 0, 19, 1, 0, 5.0]])[0][0])
+print('Kate',model.predict([[1,1,17,1,2,100]]))
+
+print("the first row of data",data[0])
+
+dino$aur
+
+pip3 install scipy
